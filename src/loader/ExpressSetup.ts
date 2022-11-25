@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import session from "express-session";
 import cors from "cors";
+import Routes from "../routes";
 
 const app: Application = express();
 
@@ -23,6 +24,8 @@ class ExpressSetup {
         saveUninitialized: true,
       })
     );
+
+    new Routes(app);
 
     return app;
   }

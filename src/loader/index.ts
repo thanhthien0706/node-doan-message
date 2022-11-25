@@ -1,5 +1,5 @@
 import ServerGlobal from "./ServerGlobal";
-import PassportService from "../service/Passport.service";
+import PassportService from "../service/ipml/Passport.service";
 
 class Index {
   constructor() {
