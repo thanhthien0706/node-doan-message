@@ -7,11 +7,15 @@ export interface IUserService {
 
   checkExists(condition: object): Promise<boolean>;
 
+  checkExistUserGithub(idGithub: string): Promise<boolean>;
+
   findOneUserByEmail(email: string): Promise<any>;
 
   findOneAndUpdateByCondition(condition: object, update: object): Promise<any>;
 
   findOneById(id: string): Promise<any>;
+
+  findOneByIdGithub(idGithub: string): Promise<any>;
 
   getAllUserWithConditionShow(hasShow: object): Promise<any>;
 

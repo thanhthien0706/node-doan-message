@@ -5,6 +5,22 @@ import UserRepository from "../../repository/User.repository";
 import { IUserService } from "../IUser.service";
 
 class UserService implements IUserService {
+  async findOneByIdGithub(idGithub: string): Promise<any> {
+    const user = await UserRepository.findOneByIdGithub(idGithub);
+    if (!user) {
+      throw createError(404, "User Not Found");
+    }
+
+    return user;
+  }
+  async checkExistUserGithub(idGithub: string): Promise<boolean> {
+    const check = await UserRepository.checkExistUserGithub(idGithub);
+    if (check) {
+      return true;
+    }
+
+    return false;
+  }
   async save(userModel: createUserDto): Promise<any> {
     const checkEmail = await this.checkExists({
       "local.email": userModel.email,
@@ -21,25 +37,75 @@ class UserService implements IUserService {
 
     throw createError.Conflict(`${userModel.email} is ready been registered`);
   }
-  saveGitHub(userModel: createUserDto): Promise<any> {
-    throw new Error("Method not implemented.");
+  async saveGitHub(userModel: createUserDto): Promise<any> {
+    const dataUser = await UserRepository.create(userModel);
+    if (!dataUser) {
+      throw createError(501, "Not Create User");
+    }
+
+    return dataUser;
   }
-  checkExists(condition: object): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async checkExists(condition: object): Promise<boolean> {
+    const check = await UserRepository.checkExists(condition);
+    if (check) {
+      return true;
+    }
+
+    return false;
   }
-  findOneUserByEmail(email: string): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async findOneUserByEmail(email: string): Promise<any> {
+    const user = await UserRepository.findOneByEmail(email);
+    if (!user) {
+      throw createError(404, "User Not Found");
+    }
+
+    return user;
   }
-  findOneAndUpdateByCondition(condition: object, update: object): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async findOneAndUpdateByCondition(
+    condition: object,
+    update: object
+  ): Promise<any> {
+    const user = await UserRepository.findOneAndUpdateByCondition(
+      condition,
+      update
+    );
+    if (!user) {
+      throw createError(404, "User Not Found");
+    }
+
+    return user;
   }
-  findOneById(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async findOneById(id: string): Promise<any> {
+    const user = await UserRepository.findOneById(id);
+    if (!user) {
+      throw createError(404, "User Not Found");
+    }
+
+    return user;
   }
-  getAllUserWithConditionShow(hasShow: object): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async getAllUserWithConditionShow(hasShow: object): Promise<any> {
+    const users = await UserRepository.findAllHasShow(hasShow);
+
+    if (!users) {
+      throw createError(404, "User Not Found");
+    }
+
+    return users;
   }
-  deleteById(idUser: string): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async deleteById(idUser: string): Promise<any> {
+    const deleteUser = await UserRepository.deleteById(idUser);
+
+    if (!deleteUser) {
+      throw createError(404, "User Not Found");
+    }
+
+    return deleteUser;
   }
 }
+
+export default new UserService();

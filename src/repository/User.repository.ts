@@ -10,6 +10,16 @@ class UserRepository {
     });
   }
 
+  checkExistUserGithub(idGithub: string) {
+    return new Promise((resolve, reject) => {
+      UserModel.exists({
+        "github.id": idGithub,
+      })
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
+
   create(userModel: createUserDto) {
     return new Promise((resolve, reject) => {
       UserModel.create(userModel)
@@ -69,6 +79,20 @@ class UserRepository {
   findOneById(id: string) {
     return new Promise((resolve, reject) => {
       UserModel.findById(id)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  findOneByIdGithub(idGithub: string) {
+    return new Promise((resolve, reject) => {
+      UserModel.findOne({
+        "github.id": idGithub,
+      })
         .then((data) => {
           resolve(data);
         })

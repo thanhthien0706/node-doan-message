@@ -11,7 +11,7 @@ class ExpressSetup {
     app.use(cors());
 
     // view engine setup
-    app.set("views", "./src/view");
+    app.set("views", "./src/views");
     app.set("view engine", "ejs");
 
     app.use(express.json());
