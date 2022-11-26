@@ -33,12 +33,16 @@ class UserRepository {
   save(userModel: createUserDto) {
     return new Promise((resolve, reject) => {
       const newUser = new UserModel();
-      newUser.userName = userModel.username;
+      newUser.username = userModel.username;
+      newUser.avatar =
+        "https://res.cloudinary.com/dovyiclf0/image/upload/v1669468094/doan4-message/user_djnyoz.png";
       if (newUser.local) {
+        newUser.local.fullname = userModel.fullname;
         newUser.local.email = userModel.email;
         newUser.local.password = newUser.generateHash(userModel.password);
       }
       newUser.activity = statusActive.ACTIVE;
+      newUser.phone = userModel.phone;
       newUser.role = userModel.role;
 
       newUser
@@ -55,6 +59,7 @@ class UserRepository {
   findOneByEmail(email: string) {
     return new Promise((resolve, reject) => {
       UserModel.findOne({ "local.email": email })
+        .select("+local.password")
         .then((data) => {
           resolve(data);
         })

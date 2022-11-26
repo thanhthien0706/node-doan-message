@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { forgotPasswordDto } from "../../dto/request/UserDTO";
+import { createUserDto, forgotPasswordDto } from "../../dto/request/UserDTO";
 import ResponseBasicDTO from "../../dto/response/ResponseDTO";
 import AuthService from "../../service/ipml/Auth.service";
 // import AuthService;
@@ -8,7 +8,8 @@ class AuthController {
   // [POST] /auth/signup
   async signup(req: Request, res: Response, next: NextFunction) {
     try {
-      const dataUser = await AuthService.signup(req.body);
+      const userModel: createUserDto = req.body;
+      const dataUser = await AuthService.signup(userModel);
       return res
         .status(200)
         .json(new ResponseBasicDTO(true, "Create user successfully", dataUser));
@@ -29,12 +30,14 @@ class AuthController {
     }
   }
 
-  // [POST] /auth/forgot-password
+  // [POST] /auth/forgot-password?email=....
   async forgotPassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const payload: forgotPasswordDto = req.body;
-      payload.host = req.get("host");
-      payload.protocol = req.protocol;
+      const payload: forgotPasswordDto = {
+        email: req.query.email as string,
+        host: req.get("host"),
+        protocol: req.protocol,
+      };
 
       const forgotPassword = await AuthService.forgotPassword(payload);
 

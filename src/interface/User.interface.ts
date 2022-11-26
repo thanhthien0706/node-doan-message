@@ -1,10 +1,10 @@
 import { Types } from "mongoose";
 
 export interface IUser {
-  userName?: string;
+  username?: string;
   avatar?: string;
   local?: {
-    fullName?: string;
+    fullname?: string;
     email?: string;
     password?: string;
   };

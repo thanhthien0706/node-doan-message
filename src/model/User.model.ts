@@ -25,9 +25,9 @@ const UserSchema: Schema = new Schema(
       type: String,
     },
     local: {
-      fullName: { type: String },
+      fullname: { type: String },
       email: { type: String },
-      password: { type: String },
+      password: { type: String, select: false },
     },
     github: {
       id: { type: String },

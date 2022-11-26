@@ -1,7 +1,9 @@
 import { Types } from "mongoose";
 
 export interface createUserDto {
+  fullname?: string;
   username?: string;
+  phone?: string;
   email?: string;
   password?: any;
   role?: any;

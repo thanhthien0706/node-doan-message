@@ -1,6 +1,8 @@
+import { NextFunction, Request, Response } from "express";
+
 import RoleService from "../../service/ipml/Role.service";
 import ResponseBasicDTO from "../../dto/response/ResponseDTO";
-import { NextFunction, Request, Response } from "express";
+
 import { createRoleDto } from "../../dto/request/RoleDTO";
 
 class RoleController {

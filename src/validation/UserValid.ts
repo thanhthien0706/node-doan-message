@@ -2,7 +2,9 @@ import { Segments, Joi } from "celebrate";
 
 export const createUserValid = {
   [Segments.BODY]: Joi.object().keys({
+    fullname: Joi.string().required(),
     username: Joi.string().required(),
+    phone: Joi.string().required(),
     email: Joi.string().pattern(new RegExp("gmail.com")).email().required(),
     password: Joi.string().min(8).max(32).required(),
   }),
@@ -16,7 +18,7 @@ export const signInUserValid = {
 };
 
 export const forgotPasswordValid = {
-  [Segments.BODY]: Joi.object().keys({
+  [Segments.QUERY]: Joi.object().keys({
     email: Joi.string().pattern(new RegExp("gmail.com")).email().required(),
   }),
 };

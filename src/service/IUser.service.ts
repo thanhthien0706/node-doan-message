@@ -1,6 +1,8 @@
 import { createUserDto } from "../dto/request/UserDTO";
 
 export interface IUserService {
+  getAllUserWithConditionShow(hasShow: object): Promise<any>;
+
   save(userModel: createUserDto): Promise<any>;
 
   saveGitHub(userModel: createUserDto): Promise<any>;
@@ -16,8 +18,6 @@ export interface IUserService {
   findOneById(id: string): Promise<any>;
 
   findOneByIdGithub(idGithub: string): Promise<any>;
-
-  getAllUserWithConditionShow(hasShow: object): Promise<any>;
 
   deleteById(idUser: string): Promise<any>;
 }

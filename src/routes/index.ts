@@ -5,6 +5,7 @@ import createError from "http-errors";
 
 import AuthRouter from "./Auth.router";
 import RoleRouter from "./Role.router";
+import UserRouter from "./User.router";
 
 class Index {
   private app: Application;
@@ -14,6 +15,7 @@ class Index {
     this.initRoutes();
   }
   initRoutes() {
+    this.app.use("/user", UserRouter);
     this.app.use("/auth", AuthRouter);
     this.app.use("/role", RoleRouter);
     this.app.use((req, res, next) => {
