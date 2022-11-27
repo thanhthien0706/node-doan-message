@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 
 export interface IMyFriends {
   me: Types.ObjectId;
-  friends: IFriend[];
+  friends: IFriend;
 }
 
 export interface IFriend {

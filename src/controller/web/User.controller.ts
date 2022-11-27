@@ -18,6 +18,13 @@ class UserController {
       next(error);
     }
   }
+
+  async findUser(req: Request, res: Response, next: NextFunction) {
+    try {
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

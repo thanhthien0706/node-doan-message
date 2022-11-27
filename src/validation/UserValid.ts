@@ -35,3 +35,9 @@ export const changePasswordValid = {
     tokenReset: Joi.string().required(),
   }),
 };
+
+export const findUserValid = {
+  [Segments.QUERY]: Joi.object().keys({
+    search: Joi.string().required(),
+  }),
+};

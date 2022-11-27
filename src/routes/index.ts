@@ -1,11 +1,13 @@
 import { Application } from "express";
+import createError from "http-errors";
 
 import { ErrorHandler } from "../middleware/ErrorHandler.middleware";
-import createError from "http-errors";
+import CheckAccountMiddleware from "../middleware/CheckAccount.middleware";
 
 import AuthRouter from "./Auth.router";
 import RoleRouter from "./Role.router";
 import UserRouter from "./User.router";
+import FriendRouter from "./Friend.router";
 
 class Index {
   private app: Application;
@@ -15,6 +17,7 @@ class Index {
     this.initRoutes();
   }
   initRoutes() {
+    this.app.use("/friend", CheckAccountMiddleware.checkLogin, FriendRouter);
     this.app.use("/user", UserRouter);
     this.app.use("/auth", AuthRouter);
     this.app.use("/role", RoleRouter);

@@ -14,10 +14,13 @@ const FriendSchema = new Schema(
         friend: Types.ObjectId,
         isBlocked: Boolean,
       },
+      { _id: false },
     ],
   },
   { timestamps: true }
 );
+
+FriendSchema.index({ "$**": "text" });
 
 const FriendModel: Model<IFriendModel> = model<IFriendModel>(
   "Friend",
