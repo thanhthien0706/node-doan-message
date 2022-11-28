@@ -1,5 +1,9 @@
+import { sendInvitationFriendDto } from "../dto/request/FriendDTO";
+
 export interface IFriendService {
-  addFriend(meId: string, friendId: string): Promise<boolean>;
+  sendInvitationFriend(notifiModel: sendInvitationFriendDto): Promise<boolean>;
+
+  addFriend(meId: string, friendId: string, status: boolean): Promise<boolean>;
 
   findFriendById(id: string): Promise<any>;
 

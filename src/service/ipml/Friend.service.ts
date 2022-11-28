@@ -1,3 +1,5 @@
+import createError from "http-errors";
+
 import { IFriendService } from "../IFriend.service";
 
 import FriendRepository from "../../repository/Friend.repository";
@@ -5,58 +7,78 @@ import FriendModel, { IFriendDocument } from "../../model/Friend.model";
 
 import { Types } from "mongoose";
 import { IFriend } from "../../interface/Friend.interface";
-import createError from "http-errors";
+import { sendInvitationFriendDto } from "../../dto/request/FriendDTO";
+import NotifiAddFriendService from "./NotifiAddFriend.service";
 
 class FriendService implements IFriendService {
-  async addFriend(meId: string, friendId: string): Promise<boolean> {
-    const checkAddFriend = await this.checkAddedFriend(meId, friendId);
+  async sendInvitationFriend(
+    notifiModel: sendInvitationFriendDto
+  ): Promise<boolean> {
+    const notifi = await NotifiAddFriendService.createNotifiInvitation(
+      notifiModel
+    );
 
-    if (checkAddFriend) {
-      throw createError(500, "You guys were friends");
+    if (!notifi) {
+      throw new createError.NotImplemented("Not create notification addFriend");
     }
 
-    let checkHandler = false;
-    const checkExist = await this.checkUserExist(meId);
+    return true;
+  }
 
-    if (checkExist) {
-      // update
-      const result = await FriendRepository.updateFriend(
-        {
-          me: meId as unknown as Types.ObjectId,
-        },
-        {
-          $push: {
-            friends: {
-              friend: friendId as unknown as Types.ObjectId,
-              isBlocked: false,
-            } as IFriend,
+  async addFriend(
+    meId: string,
+    friendId: string,
+    status: boolean
+  ): Promise<boolean> {
+    const resultDeleteNotifi = await NotifiAddFriendService.removeInvitaion(
+      meId,
+      friendId
+    );
+
+    if (resultDeleteNotifi && status) {
+      const checkAddFriend = await this.checkAddedFriend(meId, friendId);
+      if (checkAddFriend) {
+        throw createError(500, "You guys were friends");
+      }
+      let checkHandler = false;
+      const checkExist = await this.checkUserExist(meId);
+      if (checkExist) {
+        // update
+        const result = await FriendRepository.updateFriend(
+          {
+            me: meId as unknown as Types.ObjectId,
           },
+          {
+            $push: {
+              friends: {
+                friend: friendId as unknown as Types.ObjectId,
+                isBlocked: false,
+              } as IFriend,
+            },
+          }
+        );
+        if (!result) {
+          throw createError(500, "Not Update User Add Friend");
         }
-      );
-
-      if (!result) {
-        throw createError(500, "Not Update User Add Friend");
+        checkHandler = true;
+      } else {
+        // crate new
+        const friendModel: IFriendDocument = new FriendModel();
+        friendModel.me = meId as unknown as Types.ObjectId;
+        friendModel.friends = {
+          friend: friendId as unknown as Types.ObjectId,
+          isBlocked: false,
+        } as IFriend;
+        const result = await FriendRepository.addFriend(friendModel);
+        if (!result) {
+          throw createError(500, "Not Create User Add Friend");
+        }
+        checkHandler = true;
       }
-
-      checkHandler = true;
-    } else {
-      // crate new
-      const friendModel: IFriendDocument = new FriendModel();
-      friendModel.me = meId as unknown as Types.ObjectId;
-      friendModel.friends = {
-        friend: friendId as unknown as Types.ObjectId,
-        isBlocked: false,
-      } as IFriend;
-
-      const result = await FriendRepository.addFriend(friendModel);
-
-      if (!result) {
-        throw createError(500, "Not Create User Add Friend");
-      }
-      checkHandler = true;
+      return checkHandler;
     }
 
-    return checkHandler;
+    return true;
   }
 
   async searchFriend(meId: string, searchText: string): Promise<any> {
@@ -65,7 +87,7 @@ class FriendService implements IFriendService {
       searchText
     );
 
-    if (result) {
+    if (!result) {
       throw createError(500, "Can't find friend");
     }
 

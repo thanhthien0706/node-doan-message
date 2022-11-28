@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import FriendModel, { IFriendDocument } from "../model/Friend.model";
 
 class FriendRepository {
@@ -36,7 +36,33 @@ class FriendRepository {
 
   searchFriend(meId: Types.ObjectId, searchText: string) {
     return new Promise((resolve, reject) => {
-      FriendModel.find({ me: meId, $text: { $search: searchText } })
+      FriendModel.aggregate([
+        {
+          $match: { me: new mongoose.Types.ObjectId(meId) },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "friends.friend",
+            foreignField: "_id",
+            as: "dataFriends",
+          },
+        },
+        {
+          $match: {
+            "dataFriends.username": new RegExp("^" + searchText + "$", "i"),
+            // $or: [
+            //   {
+            //     dataFriends: {
+            //       $in: {
+            //         username: new RegExp("^" + searchText + "$", "i"),
+            //       },
+            //     },
+            //   },
+            // ],
+          },
+        },
+      ])
         .then((data) => resolve(data))
         .catch((err) => reject(err));
     });
