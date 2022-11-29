@@ -69,7 +69,7 @@ class NotifiAddFriendService implements INotifiAddFriendService {
       );
     }
 
-    if (users) {
+    if (!users) {
       throw new createError.NotFound(`User with id ${meId} find errors`);
     }
 

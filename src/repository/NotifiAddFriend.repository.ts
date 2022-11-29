@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { sendInvitationFriendDto } from "../dto/request/FriendDTO";
 import NotifiAddFriendModel from "../model/NotifiAddFriend.model";
 
@@ -26,9 +26,36 @@ class NotifiAddFriendRepository {
 
   findAllWithMeId(meid: string) {
     return new Promise((resolve, reject) => {
-      NotifiAddFriendModel.find({
-        requester: meid as unknown as Types.ObjectId,
-      })
+      NotifiAddFriendModel.aggregate([
+        {
+          $match: {
+            requester: new mongoose.Types.ObjectId(meid),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "receiver",
+            foreignField: "_id",
+            as: "dataReceiver",
+          },
+        },
+        {
+          $unwind: "$dataReceiver",
+        },
+        {
+          $project: {
+            _id: 1,
+            description: 1,
+            requester: 1,
+            createdAt: 1,
+            updatedAt: 1,
+            "dataReceiver._id": 1,
+            "dataReceiver.local.fullname": 1,
+            "dataReceiver.avatar": 1,
+          },
+        },
+      ])
         .then((data) => resolve(data))
         .catch((err) => reject(err));
     });
