@@ -11,6 +11,7 @@ import {
 } from "../validation/FriendValid";
 
 router.get("/all", FriendController.showAllNotifiAddFriend);
+router.get("/all-friend", FriendController.showAllFriend);
 router.get("/add", celebrate(addFriendValid), FriendController.addFriendById);
 router.get("/find", celebrate(findFriendValid), FriendController.findFriend);
 

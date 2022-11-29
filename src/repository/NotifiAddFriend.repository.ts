@@ -29,19 +29,19 @@ class NotifiAddFriendRepository {
       NotifiAddFriendModel.aggregate([
         {
           $match: {
-            requester: new mongoose.Types.ObjectId(meid),
+            receiver: new mongoose.Types.ObjectId(meid),
           },
         },
         {
           $lookup: {
             from: "users",
-            localField: "receiver",
+            localField: "requester",
             foreignField: "_id",
-            as: "dataReceiver",
+            as: "dataRequester",
           },
         },
         {
-          $unwind: "$dataReceiver",
+          $unwind: "$dataRequester",
         },
         {
           $project: {
@@ -50,9 +50,9 @@ class NotifiAddFriendRepository {
             requester: 1,
             createdAt: 1,
             updatedAt: 1,
-            "dataReceiver._id": 1,
-            "dataReceiver.local.fullname": 1,
-            "dataReceiver.avatar": 1,
+            "dataRequester._id": 1,
+            "dataRequester.local.fullname": 1,
+            "dataRequester.avatar": 1,
           },
         },
       ])

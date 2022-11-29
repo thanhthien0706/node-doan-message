@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import createError from "http-errors";
 import { Types } from "mongoose";
+import { nextTick } from "process";
 import { sendInvitationFriendDto } from "../../dto/request/FriendDTO";
 
 import ResponseBasicDTO from "../../dto/response/ResponseDTO";
@@ -97,6 +98,21 @@ class FriendController {
             "Show All List Notification Add Friend",
             result
           )
+        );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [GET] /friend/all-friend
+  async showAllFriend(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await FriendService.findAllFriend(req.id as string);
+
+      return res
+        .status(200)
+        .json(
+          new ResponseBasicDTO(true, "Get List Friend Successfully", result)
         );
     } catch (error) {
       next(error);

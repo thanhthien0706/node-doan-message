@@ -19,6 +19,38 @@ class FriendRepository {
     });
   }
 
+  findAllById(id: string) {
+    return new Promise((resolve, reject) => {
+      FriendModel.aggregate([
+        { $match: { me: new mongoose.Types.ObjectId(id) } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "friends.friend",
+            foreignField: "_id",
+            as: "dataFriends",
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            friends: 1,
+            me: 1,
+            "dataFriends._id": 1,
+            "dataFriends.local.fullname": 1,
+            "dataFriends.local.email": 1,
+            "dataFriends.username": 1,
+            "dataFriends.avatar": 1,
+            "dataFriends.activity": 1,
+            "dataFriends.phone": 1,
+          },
+        },
+      ])
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
+
   updateFriend(condition: object, updateData: object) {
     return new Promise((resolve, reject) => {
       FriendModel.updateOne(condition, updateData)

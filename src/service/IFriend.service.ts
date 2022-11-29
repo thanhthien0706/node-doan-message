@@ -12,4 +12,6 @@ export interface IFriendService {
   checkAddedFriend(idUser: string, idFriend: string): Promise<boolean>;
 
   searchFriend(meId: string, searchText: string): Promise<any>;
+
+  findAllFriend(meId: string): Promise<any>;
 }

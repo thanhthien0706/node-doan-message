@@ -36,49 +36,52 @@ class FriendService implements IFriendService {
     );
 
     if (resultDeleteNotifi && status) {
-      const checkAddFriend = await this.checkAddedFriend(meId, friendId);
-      if (checkAddFriend) {
-        throw createError(500, "You guys were friends");
-      }
-      let checkHandler = false;
-      const checkExist = await this.checkUserExist(meId);
-      if (checkExist) {
-        // update
-        const result = await FriendRepository.updateFriend(
-          {
-            me: meId as unknown as Types.ObjectId,
-          },
-          {
-            $push: {
-              friends: {
-                friend: friendId as unknown as Types.ObjectId,
-                isBlocked: false,
-              } as IFriend,
-            },
-          }
-        );
-        if (!result) {
-          throw createError(500, "Not Update User Add Friend");
-        }
-        checkHandler = true;
-      } else {
-        // crate new
-        const friendModel: IFriendDocument = new FriendModel();
-        friendModel.me = meId as unknown as Types.ObjectId;
-        friendModel.friends = {
-          friend: friendId as unknown as Types.ObjectId,
-          isBlocked: false,
-        } as IFriend;
-        const result = await FriendRepository.addFriend(friendModel);
-        if (!result) {
-          throw createError(500, "Not Create User Add Friend");
-        }
-        checkHandler = true;
-      }
-      return checkHandler;
+      await Promise.all([
+        this.createFriend(meId, friendId),
+        this.createFriend(friendId, meId),
+      ]);
     }
 
     return true;
+  }
+
+  async createFriend(meId: string, friendId: string) {
+    const checkAddFriend = await this.checkAddedFriend(meId, friendId);
+    if (checkAddFriend) {
+      throw createError(500, "You guys were friends");
+    }
+    const checkExist = await this.checkUserExist(meId);
+    if (checkExist) {
+      // update
+      const result = await FriendRepository.updateFriend(
+        {
+          me: meId as unknown as Types.ObjectId,
+        },
+        {
+          $push: {
+            friends: {
+              friend: friendId as unknown as Types.ObjectId,
+              isBlocked: false,
+            } as IFriend,
+          },
+        }
+      );
+      if (!result) {
+        throw createError(500, "Not Update User Add Friend");
+      }
+    } else {
+      // crate new
+      const friendModel: IFriendDocument = new FriendModel();
+      friendModel.me = meId as unknown as Types.ObjectId;
+      friendModel.friends = {
+        friend: friendId as unknown as Types.ObjectId,
+        isBlocked: false,
+      } as IFriend;
+      const result = await FriendRepository.addFriend(friendModel);
+      if (!result) {
+        throw createError(500, "Not Create User Add Friend");
+      }
+    }
   }
 
   async searchFriend(meId: string, searchText: string): Promise<any> {
@@ -125,6 +128,16 @@ class FriendService implements IFriendService {
     }
 
     return check;
+  }
+
+  async findAllFriend(meId: string): Promise<any> {
+    const friends = await FriendRepository.findAllById(meId);
+
+    if (!friends) {
+      throw new createError.NotFound("Friends of you is empty");
+    }
+
+    return friends;
   }
 }
 

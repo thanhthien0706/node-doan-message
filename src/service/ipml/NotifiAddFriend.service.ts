@@ -50,8 +50,8 @@ class NotifiAddFriendService implements INotifiAddFriendService {
     receiverId: string
   ): Promise<boolean> {
     const result = await NotifiAddFriendRepository.deleteInvitation(
-      requesterId,
-      receiverId
+      receiverId,
+      requesterId
     );
 
     if (!result) {
