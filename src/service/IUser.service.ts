@@ -5,6 +5,8 @@ export interface IUserService {
 
   save(userModel: createUserDto): Promise<any>;
 
+  searchUser(searchText: string): Promise<any>;
+
   saveGitHub(userModel: createUserDto): Promise<any>;
 
   checkExists(condition: object): Promise<boolean>;

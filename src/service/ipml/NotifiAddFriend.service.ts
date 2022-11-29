@@ -59,6 +59,22 @@ class NotifiAddFriendService implements INotifiAddFriendService {
     }
     return true;
   }
+
+  async showAllNotifiAddFriend(meId: string): Promise<any> {
+    const users: any = await NotifiAddFriendRepository.findAllWithMeId(meId);
+
+    if (users.length === 0) {
+      throw new createError.NotFound(
+        `User with id ${meId} not have notification addfriend`
+      );
+    }
+
+    if (users) {
+      throw new createError.NotFound(`User with id ${meId} find errors`);
+    }
+
+    return users;
+  }
 }
 
 export default new NotifiAddFriendService();

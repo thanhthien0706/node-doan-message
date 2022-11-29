@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import FriendModel, { IFriendDocument } from "../model/Friend.model";
+import NotifiAddFriendRepository from "./NotifiAddFriend.repository";
 
 class FriendRepository {
   addFriend(friendModel: IFriendDocument) {
@@ -50,16 +51,7 @@ class FriendRepository {
         },
         {
           $match: {
-            "dataFriends.username": new RegExp("^" + searchText + "$", "i"),
-            // $or: [
-            //   {
-            //     dataFriends: {
-            //       $in: {
-            //         username: new RegExp("^" + searchText + "$", "i"),
-            //       },
-            //     },
-            //   },
-            // ],
+            "dataFriends.username": new RegExp(searchText, "i"),
           },
         },
       ])

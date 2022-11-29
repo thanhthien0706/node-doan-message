@@ -24,6 +24,24 @@ class NotifiAddFriendRepository {
     });
   }
 
+  findAllWithMeId(meid: string) {
+    return new Promise((resolve, reject) => {
+      NotifiAddFriendModel.find({
+        requester: meid as unknown as Types.ObjectId,
+      })
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
+
+  findWithCondition(condition: object) {
+    return new Promise((resolve, reject) => {
+      NotifiAddFriendModel.find(condition)
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
+
   deleteInvitation(requesterId: string, receiverId: string) {
     return new Promise((resolve, reject) => {
       NotifiAddFriendModel.findOneAndDelete({

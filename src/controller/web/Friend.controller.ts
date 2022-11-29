@@ -7,19 +7,18 @@ import ResponseBasicDTO from "../../dto/response/ResponseDTO";
 
 import FriendService from "../../service/ipml/Friend.service";
 import JwtService from "../../service/ipml/Jwt.service";
+import NotifiAddFriendService from "../../service/ipml/NotifiAddFriend.service";
 
 class FriendController {
+  constructor() {}
+
   // [POST] /friend/send-invitation
   async sendInvitation(req: Request, res: Response, next: NextFunction) {
-    console.log("da vao gui");
     try {
-      const token = JwtService.getToken(req.headers);
-      const { id } = await JwtService.verifyToken(token);
-
       const notifiModel: sendInvitationFriendDto = {
         description: req.body.description,
         receiver: req.body.receiver,
-        requester: id,
+        requester: req.id,
       };
 
       const checkNotifi = await FriendService.sendInvitationFriend(notifiModel);
@@ -37,11 +36,8 @@ class FriendController {
   // [GET] /friend/add?id=....
   async addFriendById(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = JwtService.getToken(req.headers);
-      const { id } = await JwtService.verifyToken(token);
-
       const addFriend: boolean = await FriendService.addFriend(
-        id,
+        req.id as string,
         req.query.id as string,
         req.query.status as unknown as boolean
       );
@@ -67,16 +63,41 @@ class FriendController {
   // [GET] /friend/find?search=....
   async findFriend(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = JwtService.getToken(req.headers);
-      const { id } = await JwtService.verifyToken(token);
-
       const searchText = req.query.search as string;
 
-      const dataSearch = await FriendService.searchFriend(id, searchText);
+      const dataSearch = await FriendService.searchFriend(
+        req.id as string,
+        searchText
+      );
 
       return res
         .status(200)
         .json(new ResponseBasicDTO(true, "Search Friend Of You", dataSearch));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [GET] /friend/all
+  async showAllNotifiAddFriend(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const result = await NotifiAddFriendService.showAllNotifiAddFriend(
+        req.id as string
+      );
+
+      return res
+        .status(200)
+        .json(
+          new ResponseBasicDTO(
+            true,
+            "Show All List Notification Add Friend",
+            result
+          )
+        );
     } catch (error) {
       next(error);
     }

@@ -19,6 +19,7 @@ class CheckAccount {
     if (dataToken.id === null) {
       throw createError(401, "Not Verify Token");
     } else {
+      req.id = dataToken.id;
       next();
     }
   }

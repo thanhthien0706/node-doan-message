@@ -1,5 +1,6 @@
 import UserModel, { statusActive } from "../model/User.model";
 import { createUserDto } from "../dto/request/UserDTO";
+import { Types } from "mongoose";
 
 class UserRepository {
   checkExists(condition: object) {
@@ -117,6 +118,22 @@ class UserRepository {
           },
         },
       ])
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
+
+  searchUser(searchText: string) {
+    return new Promise((resolve, reject) => {
+      let regex = new RegExp(searchText, "i");
+      UserModel.find({
+        $or: [
+          { username: regex },
+          { phone: regex },
+          { "local.fullname": regex },
+          { "local.email": regex },
+        ],
+      })
         .then((data) => resolve(data))
         .catch((err) => reject(err));
     });

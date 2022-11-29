@@ -9,4 +9,6 @@ export interface INotifiAddFriendService {
   ): Promise<boolean>;
 
   removeInvitaion(requesterId: string, receiverId: string): Promise<boolean>;
+
+  showAllNotifiAddFriend(meId: string): Promise<any>;
 }

@@ -21,6 +21,11 @@ class UserController {
 
   async findUser(req: Request, res: Response, next: NextFunction) {
     try {
+      const result = await UserService.searchUser(req.query.search as string);
+
+      return res
+        .status(200)
+        .json(new ResponseBasicDTO(true, "Find users successfully", result));
     } catch (error) {
       next(error);
     }

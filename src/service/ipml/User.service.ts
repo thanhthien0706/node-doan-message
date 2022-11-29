@@ -5,6 +5,16 @@ import UserRepository from "../../repository/User.repository";
 import { IUserService } from "../IUser.service";
 
 class UserService implements IUserService {
+  async searchUser(searchText: string): Promise<any> {
+    const users: any = await UserRepository.searchUser(searchText);
+
+    if (!users || users.length <= 0) {
+      throw new createError.NotFound("Users Not Found");
+    }
+
+    return users;
+  }
+
   async findOneByIdGithub(idGithub: string): Promise<any> {
     const user = await UserRepository.findOneByIdGithub(idGithub);
     if (!user) {
