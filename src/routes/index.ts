@@ -8,6 +8,7 @@ import AuthRouter from "./Auth.router";
 import RoleRouter from "./Role.router";
 import UserRouter from "./User.router";
 import FriendRouter from "./Friend.router";
+import ConversationRouter from "./Conversation.router";
 
 class Index {
   private app: Application;
@@ -17,6 +18,11 @@ class Index {
     this.initRoutes();
   }
   initRoutes() {
+    this.app.use(
+      "/conversation",
+      CheckAccountMiddleware.checkLogin,
+      ConversationRouter
+    );
     this.app.use("/friend", CheckAccountMiddleware.checkLogin, FriendRouter);
     this.app.use("/user", UserRouter);
     this.app.use("/auth", AuthRouter);

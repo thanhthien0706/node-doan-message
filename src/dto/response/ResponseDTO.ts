@@ -4,7 +4,7 @@ class ResponseBasicDTO {
   private data: any;
 
   constructor(status: boolean, message: string, data: any) {
-    this.status = status;
+    this.status = status || true;
     this.message = message;
     this.data = data;
   }

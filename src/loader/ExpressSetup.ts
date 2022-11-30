@@ -2,11 +2,16 @@ import express, { Application } from "express";
 import session from "express-session";
 import cors from "cors";
 import Routes from "../routes";
+import http from "http";
+import SocketSetup from "./SocketSetup";
 
 const app: Application = express();
 
 class ExpressSetup {
-  constructor() {}
+  private server: any;
+  constructor() {
+    this.server = http.createServer(app);
+  }
   mainInit() {
     app.use(cors());
 
@@ -25,9 +30,10 @@ class ExpressSetup {
       })
     );
 
+    new SocketSetup(this.server);
     new Routes(app);
 
-    return app;
+    return this.server;
   }
 }
 

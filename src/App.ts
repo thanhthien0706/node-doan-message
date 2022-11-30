@@ -4,6 +4,7 @@ import { Application } from "express";
 
 class App {
   private port: number | string;
+
   constructor() {
     this.port = process.env.PORT || 3000;
     this.initMain();
@@ -12,9 +13,9 @@ class App {
     await new loader();
 
     const expressSetup = new ExpressSetup();
-    const app: Application = expressSetup.mainInit();
+    const server: Application = expressSetup.mainInit();
 
-    app.listen(this.port, (): void => {
+    server.listen(this.port, (): void => {
       console.log("listening on port " + this.port);
     });
   }

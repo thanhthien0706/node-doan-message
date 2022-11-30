@@ -20,6 +20,10 @@ const ConversationSchema = new Schema(
     description: String,
     files: [{ type: String }],
     members: [{ type: Types.ObjectId, ref: "User" }],
+    typeConversation: {
+      type: String,
+      enum: ["single", "group"],
+    },
     isBlocked: Boolean,
   },
   { timestamps: true }

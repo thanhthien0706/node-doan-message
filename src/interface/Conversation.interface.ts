@@ -1,11 +1,12 @@
 import { Types } from "mongoose";
 
 export interface IConversation {
-  nameGroup?: string;
+  nameGroup?: string | null;
   channelId?: string;
-  avatar?: string;
+  avatar?: string | null;
   description?: string;
-  files?: string[];
-  members?: Types.ObjectId[];
+  files?: string[] | null;
+  members?: string[];
+  typeConversation?: string;
   isBlocked?: boolean;
 }

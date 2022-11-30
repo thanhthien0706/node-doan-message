@@ -9,6 +9,9 @@ import { Types } from "mongoose";
 import { IFriend } from "../../interface/Friend.interface";
 import { sendInvitationFriendDto } from "../../dto/request/FriendDTO";
 import NotifiAddFriendService from "./NotifiAddFriend.service";
+import ConversationService from "./Conversation.service";
+import UtilsService from "./Utils.service";
+import { IConversation } from "../../interface/Conversation.interface";
 
 class FriendService implements IFriendService {
   async sendInvitationFriend(
@@ -40,6 +43,18 @@ class FriendService implements IFriendService {
         this.createFriend(meId, friendId),
         this.createFriend(friendId, meId),
       ]);
+
+      const conversationModel: IConversation = {
+        nameGroup: null,
+        channelId: UtilsService.randomString(8),
+        avatar: null,
+        description: "Group chat of you",
+        files: null,
+        members: [meId, friendId],
+        typeConversation: "single",
+        isBlocked: false,
+      };
+      await ConversationService.createConversation(conversationModel);
     }
 
     return true;
