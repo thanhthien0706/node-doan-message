@@ -24,8 +24,6 @@ class FriendController {
 
       const checkNotifi = await FriendService.sendInvitationFriend(notifiModel);
 
-      console.log(checkNotifi);
-
       return res
         .status(200)
         .json(new ResponseBasicDTO(true, "Send Invatation successfully", ""));

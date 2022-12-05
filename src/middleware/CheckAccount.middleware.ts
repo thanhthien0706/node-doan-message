@@ -8,19 +8,23 @@ import UserService from "../service/ipml/User.service";
 
 class CheckAccount {
   async checkLogin(req: Request, res: Response, next: NextFunction) {
-    const token = JwtService.getToken(req.headers);
+    try {
+      const token = JwtService.getToken(req.headers);
 
-    if (token === null) {
-      throw createError(401, "Expired Tokens");
-    }
+      if (token === null) {
+        throw createError(401, "Expired Tokens");
+      }
 
-    let dataToken = await JwtService.verifyToken(token);
+      let dataToken = await JwtService.verifyToken(token);
 
-    if (dataToken.id === null) {
-      throw createError(401, "Not Verify Token");
-    } else {
-      req.id = dataToken.id;
-      next();
+      if (dataToken.id === null) {
+        throw createError(401, "Not Verify Token");
+      } else {
+        req.id = dataToken.id;
+        next();
+      }
+    } catch (error) {
+      next(error);
     }
   }
 

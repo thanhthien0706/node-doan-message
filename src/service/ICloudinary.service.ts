@@ -1,3 +1,3 @@
-// export interface IClouddinaryService {
-//   uploadFile(file, options: object): Promise<any>;
-// }
+export interface IClouddinaryService {
+  uploadFile(file: any, options: object): Promise<any>;
+}

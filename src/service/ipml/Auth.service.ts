@@ -28,8 +28,6 @@ class AuthService implements IAuthService {
   async signin(userModel: signinUserDto): Promise<any> {
     const dataUser: any = await UserService.findOneUserByEmail(userModel.email);
 
-    console.log(dataUser);
-
     if (!dataUser.validPassword(userModel.password)) {
       throw createError(200, "Wrong Password");
     }
