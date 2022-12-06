@@ -1,18 +1,19 @@
 import socketio from "socket.io";
+import SocketService from "../service/ipml/Socket.service";
+
+let io: any = null;
 
 class SocketSetup {
-  private readonly io: any;
   constructor(server: any) {
-    this.io = require("socket.io")(server, {
+    this.initMain(server);
+  }
+  initMain(server: any) {
+    io = require("socket.io")(server, {
       cors: {
         origin: "*",
       },
     });
-
-    this.initMain();
-  }
-  initMain() {
-    this.io.on("connection", this.handleConnections);
+    io.on("connection", this.handleConnections);
   }
   handleConnections(socket: any): any {
     console.log("co nguoi ket noi " + socket.id);
@@ -20,6 +21,7 @@ class SocketSetup {
     socket.on("disconnect", () => {
       console.log("co nguoi nguoi ngat ket noi " + socket.id);
     });
+    new SocketService(io, socket);
   }
 }
 
