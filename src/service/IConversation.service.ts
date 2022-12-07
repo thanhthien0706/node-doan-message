@@ -7,4 +7,13 @@ export interface IConversationService {
   findAllConversationByMeId(
     meId: string
   ): Promise<IConversationDocument | IConversationDocument[] | unknown>;
+
+  findOneConversationById(idGroup: string): Promise<any>;
+
+  checkUserExistInConversation(
+    idUser: string,
+    idConversation: string
+  ): Promise<boolean>;
+
+  joinGroupChat(idUser: string, idConversation: string): Promise<any>;
 }
