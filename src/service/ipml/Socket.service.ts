@@ -1,5 +1,8 @@
 import { ISocketService } from "../ISocket.service";
 import MessageService from "./Message.service";
+import CloudinaryService from "./Cloudinary.service";
+import { Types } from "mongoose";
+import { createMessageDTO } from "../../dto/request/MessageDTO";
 
 let io: any;
 
@@ -14,14 +17,33 @@ class SocketService implements ISocketService {
   }
   initMain() {
     this.socket.on("groupchat:join", (groups: any) => {
-      console.log("Join vao group", groups);
       this.socket.join(groups);
-      this.socket.on("groupchat:sendMess", this.sendMessengerToGroup);
     });
+    this.socket.on("groupchat:sendMess", this.sendMessengerToGroup);
   }
-  sendMessengerToGroup({ content, to, from }: any): any {
-    io.in(to).emit(`serverGroupChat:sendMess-${to}`, "du lieu tra ve ne");
-    console.log(content, to, from);
+  async sendMessengerToGroup({ data }: any) {
+    const messModel: createMessageDTO = {
+      content: data.content as string,
+      type: data.type as string,
+      conversation: new Types.ObjectId(data.conversation as string),
+      attachment: null,
+      sender: new Types.ObjectId(data.sender),
+    };
+
+    if (data.attachment) {
+      const fileUpload = await CloudinaryService.uploadFileBuffer(
+        data.attachment
+      );
+      messModel.attachment = fileUpload.url;
+    }
+
+    const mess = await MessageService.createMessage(messModel);
+    const resultMess = await MessageService.getOneMessage(mess._id);
+
+    io.in(data.conversation).emit(
+      `serverGroupChat:sendMess-${data.conversation}`,
+      resultMess[0]
+    );
   }
 }
 

@@ -26,6 +26,16 @@ class MessageService implements IMessageService {
 
     return dataMess;
   }
+
+  async getOneMessage(id: string): Promise<any> {
+    const dataMess: any = await MessageRepository.findOneMessage(id);
+
+    if (!dataMess) {
+      throw new createErrorr.Conflict(dataMess.message);
+    }
+
+    return dataMess;
+  }
 }
 
 export default new MessageService();
