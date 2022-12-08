@@ -18,9 +18,6 @@ class SocketSetup {
   handleConnections(socket: any): any {
     console.log("co nguoi ket noi " + socket.id);
 
-    socket.on("disconnect", () => {
-      console.log("co nguoi nguoi ngat ket noi " + socket.id);
-    });
     new SocketService(io, socket);
   }
 }
