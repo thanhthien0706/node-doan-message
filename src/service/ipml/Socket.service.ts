@@ -52,6 +52,10 @@ class SocketService implements ISocketService {
       });
       socketExtenal.emit(`serverSendIdPeers-${idMe}`, listIdResult);
     });
+    this.socket.on("closeCall", ({ to, from }: any) => {
+      console.log("Socket Id " + to);
+      io.to(to).emit("serverSendCloseCall");
+    });
   }
   async sendMessengerToGroup({ data }: any) {
     const messModel: createMessageDTO = {
