@@ -38,10 +38,12 @@ class SocketService implements ISocketService {
     });
     this.socket.on("groupchat:join", (groups: any) => {
       this.socket.join(groups);
+      console.log(this.socket.rooms);
     });
     this.socket.on("groupchat:sendMess", this.sendMessengerToGroup);
     this.socket.on("clientSubscribePeerId", this.clientSubscribePeerId);
     this.socket.on("client:getDataPeerId", ({ idMe, listIdUser }: any) => {
+      console.log("Da bam vao call ");
       let listIdResult: any = [];
       listIdUser.forEach((item: any) => {
         const inforUser: any = listUserPeers.filter((e) => e.idUser === item);
