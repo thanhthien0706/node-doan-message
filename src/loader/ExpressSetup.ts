@@ -4,7 +4,7 @@ import cors from "cors";
 import Routes from "../routes";
 import http from "http";
 import SocketSetup from "./SocketSetup";
-import allowCors from "./CorsVercel";
+// import allowCors from "./CorsVercel";
 
 const app: Application = express();
 
@@ -14,7 +14,7 @@ class ExpressSetup {
     this.server = http.createServer(app);
   }
   mainInit() {
-    app.use(allowCors);
+    // app.use(allowCors);
 
     app.use(
       cors({

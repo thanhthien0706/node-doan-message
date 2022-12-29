@@ -29,6 +29,11 @@ class Index {
     this.app.use("/user", UserRouter);
     this.app.use("/auth", AuthRouter);
     this.app.use("/role", RoleRouter);
+    this.app.use("/test", (res, req) => {
+      return req.json({
+        mess: "Welcome to my app",
+      });
+    });
     this.app.use((req, res, next) => {
       next(new createError.NotFound("Link Api Not Found"));
     });
