@@ -16,6 +16,10 @@ interface UserPeer {
   idSocket: string;
 }
 
+interface ExtendedUserPeer extends UserPeer {
+  idSocketCaller: string;
+}
+
 class SocketService implements ISocketService {
   socket: any;
 
@@ -29,7 +33,6 @@ class SocketService implements ISocketService {
   }
   initMain() {
     this.socket.on("disconnect", () => {
-      console.log("co nguoi nguoi ngat ket noi " + this.socket.id);
       const listExist = listUserPeers.filter((item) => {
         return item.idSocket !== this.socket.id;
       });
@@ -38,24 +41,43 @@ class SocketService implements ISocketService {
     });
     this.socket.on("groupchat:join", (groups: any) => {
       this.socket.join(groups);
-      console.log(this.socket.rooms);
     });
     this.socket.on("groupchat:sendMess", this.sendMessengerToGroup);
     this.socket.on("clientSubscribePeerId", this.clientSubscribePeerId);
     this.socket.on("client:getDataPeerId", ({ idMe, listIdUser }: any) => {
-      console.log("Da bam vao call ");
       let listIdResult: any = [];
       listIdUser.forEach((item: any) => {
         const inforUser: any = listUserPeers.filter((e) => e.idUser === item);
 
         if (inforUser.length > 0) {
-          listIdResult.push(inforUser[0]);
+          const inforUserCaller: any = listUserPeers.filter(
+            (el) => el.idUser == idMe
+          );
+
+          const dataUserCallee = {
+            idUser: inforUser[0].idUser,
+            idPeer: inforUser[0].idPeer,
+            idSocket: inforUser[0].idSocket,
+          };
+
+          // const dataUserCaller = {
+          //   idUser: inforUserCaller[0].idUser,
+          //   idPeer: inforUserCaller[0].idPeer,
+          //   idSocket: inforUserCaller[0].idSocket,
+          // };
+
+          // io.to(dataUserCallee.idSocket).emit(
+          //   "serverSendInforCaller",
+          //   inforUserCaller[0]
+          // );
+          listIdResult.push(dataUserCallee);
         }
       });
+
       socketExtenal.emit(`serverSendIdPeers-${idMe}`, listIdResult);
     });
-    this.socket.on("closeCall", ({ to, from }: any) => {
-      console.log("Socket Id " + to);
+    this.socket.on("closeCall", ({ to }: any) => {
+      console.log(to);
       io.to(to).emit("serverSendCloseCall");
     });
   }

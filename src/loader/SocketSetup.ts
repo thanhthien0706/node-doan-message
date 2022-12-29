@@ -16,7 +16,7 @@ class SocketSetup {
     io.on("connection", this.handleConnections);
   }
   handleConnections(socket: any): any {
-    console.log("co nguoi ket noi " + socket.id);
+    // console.log("co nguoi ket noi " + socket.id);
 
     new SocketService(io, socket);
   }
