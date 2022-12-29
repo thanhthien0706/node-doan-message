@@ -4,14 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const enviroment_1 = require("../config/enviroment");
 class ServerGlobal {
     constructor() {
         this.initMongoose();
     }
     initMongoose() {
         mongoose_1.default
-            .connect(enviroment_1.MONGO_ENDPOINT)
+            .connect("mongodb+srv://thanhthien:q5yTDRmTa0qMYF5e@cluster0.lqwkrcv.mongodb.net/db_doan_message?retryWrites=true&w=majority")
             .then(() => {
             console.log("Connect mongo successfully ");
         })

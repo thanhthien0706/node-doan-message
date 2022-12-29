@@ -9,7 +9,9 @@ class ServerGlobal {
   }
   initMongoose() {
     mongoose
-      .connect(MONGO_ENDPOINT as string)
+      .connect(
+        "mongodb+srv://thanhthien:q5yTDRmTa0qMYF5e@cluster0.lqwkrcv.mongodb.net/db_doan_message?retryWrites=true&w=majority"
+      )
       .then(() => {
         console.log("Connect mongo successfully ");
       })
