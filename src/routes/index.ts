@@ -15,7 +15,6 @@ class Index {
   private app: Application;
   constructor(appContext: Application) {
     this.app = appContext;
-
     this.initRoutes();
   }
   initRoutes() {
