@@ -10,6 +10,7 @@ import UserRouter from "./User.router";
 import FriendRouter from "./Friend.router";
 import ConversationRouter from "./Conversation.router";
 import MessageRouter from "./Message.router";
+import TaskRouter from "./Task.router";
 
 class Index {
   private app: Application;
@@ -18,6 +19,7 @@ class Index {
     this.initRoutes();
   }
   initRoutes() {
+    this.app.use("/task", CheckAccountMiddleware.checkLogin, TaskRouter);
     this.app.use("/message", CheckAccountMiddleware.checkLogin, MessageRouter);
     this.app.use(
       "/conversation",
