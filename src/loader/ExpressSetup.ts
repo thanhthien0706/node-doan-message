@@ -1,9 +1,10 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response } from "express";
 import session from "express-session";
 import cors from "cors";
 import Routes from "../routes";
 import http from "http";
 import SocketSetup from "./SocketSetup";
+import allowCors from "./CorsVercel";
 
 const app: Application = express();
 
@@ -13,7 +14,13 @@ class ExpressSetup {
     this.server = http.createServer(app);
   }
   mainInit() {
-    app.use(cors());
+    app.use(allowCors);
+
+    app.use(
+      cors({
+        origin: "*",
+      })
+    );
 
     // view engine setup
     app.set("views", "./src/views");
