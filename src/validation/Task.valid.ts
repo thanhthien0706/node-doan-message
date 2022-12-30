@@ -1,4 +1,5 @@
 import { Segments, Joi } from "celebrate";
+import e from "express";
 
 export const createListTaskValid = {
   [Segments.BODY]: Joi.object().keys({
@@ -15,5 +16,17 @@ export const createTaskValid = {
     description: Joi.string().allow(null, ""),
     dueDate: Joi.date().allow(null, ""),
     worker: Joi.string().allow(null, ""),
+  }),
+};
+
+export const paramQueryTaskValid = {
+  [Segments.QUERY]: Joi.object().keys({
+    type: Joi.string().required(),
+  }),
+};
+
+export const paramGetTaskInListValid = {
+  [Segments.PARAMS]: Joi.object().keys({
+    idListTask: Joi.string().required(),
   }),
 };

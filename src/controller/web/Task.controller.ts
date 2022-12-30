@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, query } from "express";
 import ResponseBasicDTO from "../../dto/response/ResponseDTO";
 
 import { createListTaskDto, createTaskDto } from "../../dto/request/TaskDTO";
@@ -41,6 +41,37 @@ class TaskController {
       return res
         .status(200)
         .json(new ResponseBasicDTO(true, "Create Task successfully", task));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getListTask(req: Request, res: Response, next: NextFunction) {
+    try {
+      const type = req.query.type as string;
+      const idMe = req.id as string;
+
+      const listTasks = await TaskService.getAllListTask(idMe, type);
+
+      return res
+        .status(200)
+        .json(
+          new ResponseBasicDTO(true, "Get List Task successfully", listTasks)
+        );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAllTask(req: Request, res: Response, next: NextFunction) {
+    try {
+      const idListTask = req.params.idListTask as string;
+
+      const tasks = await TaskService.getAllTask(idListTask);
+
+      return res
+        .status(200)
+        .json(new ResponseBasicDTO(true, "Get Task successfully", tasks));
     } catch (error) {
       next(error);
     }

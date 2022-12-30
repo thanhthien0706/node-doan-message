@@ -4,7 +4,12 @@ const router = express.Router();
 
 import TaskController from "../controller/web/Task.controller";
 
-import { createListTaskValid, createTaskValid } from "../validation/Task.valid";
+import {
+  createListTaskValid,
+  createTaskValid,
+  paramQueryTaskValid,
+  paramGetTaskInListValid,
+} from "../validation/Task.valid";
 
 router.post(
   "/list-task-create",
@@ -18,4 +23,11 @@ router.post(
   TaskController.createTask
 );
 
+router.get("/me", celebrate(paramQueryTaskValid), TaskController.getListTask);
+
+router.get(
+  "/:idListTask",
+  celebrate(paramGetTaskInListValid),
+  TaskController.getAllTask
+);
 export default router;

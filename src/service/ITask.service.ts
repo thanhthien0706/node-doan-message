@@ -6,4 +6,8 @@ export interface ITaskService {
   createTask(dataCreateTask: createTaskDto): Promise<any>;
 
   updateTaskToListTask(idTask: string, idListTask: string): Promise<any>;
+
+  getAllListTask(idMe: string, type: string): Promise<any>;
+
+  getAllTask(idListTask: string): Promise<any>;
 }
