@@ -76,6 +76,21 @@ class TaskController {
       next(error);
     }
   }
+
+  async getTaskWithStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const idListTask = req.params.idListTask as string;
+      const status = req.params.statusTask as unknown as boolean;
+
+      const tasks = await TaskService.getWithStatusTask(idListTask, status);
+
+      return res
+        .status(200)
+        .json(new ResponseBasicDTO(true, "Get Task successfully", tasks));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new TaskController();

@@ -70,6 +70,31 @@ class TaskRepository {
         .catch((err) => reject(err));
     });
   }
+
+  findAllTaskByIdListTaskAndStatus(idListTask: string, status: boolean) {
+    return new Promise((resolve, reject) => {
+      ListTaskModel.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(idListTask) } },
+        {
+          $lookup: {
+            from: "tasks",
+            localField: "listTasks",
+            foreignField: "_id",
+            as: "dataTasks",
+          },
+        },
+        {
+          $match: {
+            "dataTasks.completed": status,
+          },
+        },
+      ])
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => reject(err));
+    });
+  }
 }
 
 export default new TaskRepository();

@@ -10,4 +10,6 @@ export interface ITaskService {
   getAllListTask(idMe: string, type: string): Promise<any>;
 
   getAllTask(idListTask: string): Promise<any>;
+
+  getWithStatusTask(idListTask: string, status: boolean): Promise<any>;
 }

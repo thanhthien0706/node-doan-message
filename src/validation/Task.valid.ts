@@ -30,3 +30,10 @@ export const paramGetTaskInListValid = {
     idListTask: Joi.string().required(),
   }),
 };
+
+export const paramGetTaskInListWithStatusValid = {
+  [Segments.PARAMS]: Joi.object().keys({
+    idListTask: Joi.string().required(),
+    statusTask: Joi.boolean().required(),
+  }),
+};

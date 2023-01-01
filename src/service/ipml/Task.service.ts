@@ -59,6 +59,28 @@ class TaskService implements ITaskService {
 
     return dataTasks;
   }
+
+  async getWithStatusTask(idListTask: string, status: boolean): Promise<any> {
+    const tasks: any = await TaskRepository.findAllTaskByIdListTaskAndStatus(
+      idListTask,
+      status
+    );
+
+    if (!tasks) {
+      throw new createErrorr.NotFound("Not find task");
+    }
+
+    let dataTasks;
+
+    if (tasks.length === 0) {
+      dataTasks = [];
+    } else {
+      dataTasks = tasks[0].dataTasks;
+    }
+    // const dataTasks = tasks[0].dataTasks;
+
+    return dataTasks;
+  }
 }
 
 export default new TaskService();

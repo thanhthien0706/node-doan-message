@@ -9,6 +9,7 @@ import {
   createTaskValid,
   paramQueryTaskValid,
   paramGetTaskInListValid,
+  paramGetTaskInListWithStatusValid,
 } from "../validation/Task.valid";
 
 router.post(
@@ -30,4 +31,11 @@ router.get(
   celebrate(paramGetTaskInListValid),
   TaskController.getAllTask
 );
+
+router.get(
+  "/:idListTask/:statusTask",
+  celebrate(paramGetTaskInListWithStatusValid),
+  TaskController.getTaskWithStatus
+);
+
 export default router;
