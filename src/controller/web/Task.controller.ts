@@ -31,12 +31,16 @@ class TaskController {
         completed: false,
       };
 
+      console.log(req.body);
+
       const task = await TaskService.createTask(dataTask);
 
       const updateTask = await TaskService.updateTaskToListTask(
         task._id,
-        req.body.completed
+        req.body.idListTask
       );
+
+      console.log(updateTask);
 
       return res
         .status(200)
@@ -87,6 +91,18 @@ class TaskController {
       return res
         .status(200)
         .json(new ResponseBasicDTO(true, "Get Task successfully", tasks));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateTask(req: Request, res: Response, next: NextFunction) {
+    try {
+      const task = await TaskService.updateTask(req.body);
+
+      return res
+        .status(200)
+        .json(new ResponseBasicDTO(true, "Update Task successfully", req.body));
     } catch (error) {
       next(error);
     }

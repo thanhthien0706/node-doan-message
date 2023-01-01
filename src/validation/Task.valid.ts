@@ -14,7 +14,18 @@ export const createTaskValid = {
     idListTask: Joi.string().required(),
     name: Joi.string().required(),
     description: Joi.string().allow(null, ""),
-    dueDate: Joi.date().allow(null, ""),
+    dueDate: Joi.string().allow(null, ""),
+    worker: Joi.string().allow(null, ""),
+  }),
+};
+
+export const updateTaskValid = {
+  [Segments.BODY]: Joi.object().keys({
+    idTask: Joi.string().required(),
+    name: Joi.string().required(),
+    description: Joi.string().allow(null, ""),
+    completed: Joi.boolean().allow(null, ""),
+    dueDate: Joi.string().allow(null, ""),
     worker: Joi.string().allow(null, ""),
   }),
 };

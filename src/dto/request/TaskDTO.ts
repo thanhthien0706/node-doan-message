@@ -14,3 +14,11 @@ export interface createTaskDto {
   dueDate?: string | null;
   worker?: string;
 }
+
+export interface updateTaskDto {
+  idTask?: string;
+  name?: string;
+  description?: string;
+  dueDate?: string;
+  worker?: string;
+}

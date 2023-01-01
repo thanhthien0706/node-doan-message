@@ -1,4 +1,8 @@
-import { createListTaskDto, createTaskDto } from "../dto/request/TaskDTO";
+import {
+  createListTaskDto,
+  createTaskDto,
+  updateTaskDto,
+} from "../dto/request/TaskDTO";
 
 export interface ITaskService {
   createListTask(dataCreateListTask: createListTaskDto): Promise<any>;
@@ -12,4 +16,6 @@ export interface ITaskService {
   getAllTask(idListTask: string): Promise<any>;
 
   getWithStatusTask(idListTask: string, status: boolean): Promise<any>;
+
+  updateTask(dataUpdate: updateTaskDto): Promise<any>;
 }

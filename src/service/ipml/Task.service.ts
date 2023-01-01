@@ -1,4 +1,8 @@
-import { createListTaskDto, createTaskDto } from "../../dto/request/TaskDTO";
+import {
+  createListTaskDto,
+  createTaskDto,
+  updateTaskDto,
+} from "../../dto/request/TaskDTO";
 import { ITaskService } from "../ITask.service";
 import TaskRepository from "../../repository/Task.repository";
 import { IListTask } from "../../interface/ListTask.interface";
@@ -80,6 +84,16 @@ class TaskService implements ITaskService {
     // const dataTasks = tasks[0].dataTasks;
 
     return dataTasks;
+  }
+
+  async updateTask(dataUpdate: updateTaskDto): Promise<any> {
+    const task = await TaskRepository.updateTask(dataUpdate);
+
+    if (!task) {
+      throw new createErrorr.Conflict("Not update task");
+    }
+
+    return task;
   }
 }
 
