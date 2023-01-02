@@ -48,3 +48,9 @@ export const paramGetTaskInListWithStatusValid = {
     statusTask: Joi.boolean().required(),
   }),
 };
+
+export const paramQueryConfirmTaskValid = {
+  [Segments.PARAMS]: Joi.object().keys({
+    idTask: Joi.string().required(),
+  }),
+};

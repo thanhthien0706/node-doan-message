@@ -107,6 +107,32 @@ class TaskController {
       next(error);
     }
   }
+
+  async updateCompletedTask(req: Request, res: Response, next: NextFunction) {
+    try {
+      const completed = req.params.completed;
+      const idTask = req.params.idTask;
+
+      let completedTask = true;
+
+      if (completed == "true") {
+        completedTask = true;
+      } else {
+        completedTask = false;
+      }
+
+      await TaskService.updateCompletedTask(idTask, completedTask);
+
+      const task = await TaskService.getOneTaskById(idTask);
+
+      return res
+        .status(200)
+        .json(new ResponseBasicDTO(true, "Update Task successfully", task));
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 }
 
 export default new TaskController();

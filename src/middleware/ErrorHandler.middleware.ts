@@ -14,7 +14,9 @@ export const ErrorHandler = (
   if (error.details) {
     const errorRequest = error.details.get("body");
     statusError = 500;
-    messageError = errorRequest.message;
+    if (errorRequest) {
+      messageError = errorRequest.message;
+    }
   }
 
   res.status(statusError | 500);

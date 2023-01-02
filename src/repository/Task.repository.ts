@@ -85,12 +85,14 @@ class TaskRepository {
             from: "tasks",
             localField: "listTasks",
             foreignField: "_id",
+            pipeline: [
+              {
+                $match: {
+                  completed: status,
+                },
+              },
+            ],
             as: "dataTasks",
-          },
-        },
-        {
-          $match: {
-            "dataTasks.completed": status,
           },
         },
       ])
@@ -107,6 +109,31 @@ class TaskRepository {
         { _id: dataTask.idTask as unknown as Types.ObjectId },
         dataTask
       )
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => reject(err));
+    });
+  }
+
+  updateCompletedTask(idTask: string, completed: boolean) {
+    return new Promise((resolve, reject) => {
+      TaskModel.updateOne(
+        { _id: idTask as unknown as Types.ObjectId },
+        {
+          completed: completed,
+        }
+      )
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => reject(err));
+    });
+  }
+
+  findOneById(id: string) {
+    return new Promise((resolve, reject) => {
+      TaskModel.findOne({ _id: id as unknown as Types.ObjectId })
         .then((data) => {
           resolve(data);
         })

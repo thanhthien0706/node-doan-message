@@ -10,6 +10,10 @@ import createErrorr from "http-errors";
 import { ITask } from "../../interface/Task.interface";
 
 class TaskService implements ITaskService {
+  async getOneTaskById(idTask: string): Promise<any> {
+    return TaskRepository.findOneById(idTask);
+  }
+
   async createListTask(dataCreateListTask: createListTaskDto): Promise<any> {
     const dataListTask = await TaskRepository.createListTask(
       dataCreateListTask as IListTask
@@ -88,6 +92,16 @@ class TaskService implements ITaskService {
 
   async updateTask(dataUpdate: updateTaskDto): Promise<any> {
     const task = await TaskRepository.updateTask(dataUpdate);
+
+    if (!task) {
+      throw new createErrorr.Conflict("Not update task");
+    }
+
+    return task;
+  }
+
+  async updateCompletedTask(idTask: string, completed: boolean): Promise<any> {
+    const task = await TaskRepository.updateCompletedTask(idTask, completed);
 
     if (!task) {
       throw new createErrorr.Conflict("Not update task");

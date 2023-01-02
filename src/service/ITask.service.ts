@@ -18,4 +18,8 @@ export interface ITaskService {
   getWithStatusTask(idListTask: string, status: boolean): Promise<any>;
 
   updateTask(dataUpdate: updateTaskDto): Promise<any>;
+
+  updateCompletedTask(idTask: string, completed: boolean): Promise<any>;
+
+  getOneTaskById(idTask: string): Promise<any>;
 }

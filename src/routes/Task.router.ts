@@ -11,6 +11,7 @@ import {
   paramGetTaskInListValid,
   paramGetTaskInListWithStatusValid,
   updateTaskValid,
+  paramQueryConfirmTaskValid,
 } from "../validation/Task.valid";
 
 router.post(
@@ -33,16 +34,17 @@ router.get(
   TaskController.getAllTask
 );
 
-router.get(
-  "/:idListTask/:statusTask",
-  celebrate(paramGetTaskInListWithStatusValid),
-  TaskController.getTaskWithStatus
-);
-
 router.put(
   "/update/:idTask",
   celebrate(updateTaskValid),
   TaskController.updateTask
 );
 
+router.get("/confirm/:idTask/:completed", TaskController.updateCompletedTask);
+
+router.get(
+  "/one/:idListTask/:statusTask",
+  celebrate(paramGetTaskInListWithStatusValid),
+  TaskController.getTaskWithStatus
+);
 export default router;
