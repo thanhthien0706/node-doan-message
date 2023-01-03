@@ -4,6 +4,7 @@ import CloudinaryService from "./Cloudinary.service";
 import { Types } from "mongoose";
 import { createMessageDTO } from "../../dto/request/MessageDTO";
 import { type } from "os";
+import fs from "fs";
 
 let io: any;
 let listUserPeers: UserPeer[] = [];
@@ -90,11 +91,16 @@ class SocketService implements ISocketService {
       sender: new Types.ObjectId(data.sender),
     };
 
-    if (data.attachment) {
+    if (data.attachment && data.type == "IMAGE") {
       const fileUpload = await CloudinaryService.uploadFileBuffer(
         data.attachment
       );
       messModel.attachment = fileUpload.url;
+    } else if(data.attachment && data.type == "FILE") {
+      fs.writeFileSync(`./src/public/files/${data.fileName}`, data.attachment);
+
+      const url = `http://localhost:3000/files/${data.fileName}`;
+      messModel.attachment = url;
     }
 
     const mess = await MessageService.createMessage(messModel);

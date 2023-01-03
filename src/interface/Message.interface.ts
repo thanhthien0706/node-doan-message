@@ -6,6 +6,7 @@ export interface IMessage {
     | "TEXT"
     | "IMAGE"
     | "VIDEO_CALL"
+    | "FILE"
     | "AUDIO"
     | "VOICE_CALL"
     | "VIDEO_MESS"

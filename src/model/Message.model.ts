@@ -14,6 +14,7 @@ const MessageSchema = new Schema(
       enum: [
         "TEXT",
         "IMAGE",
+        "FILE",
         "VIDEO_CALL",
         "AUDIO",
         "VOICE_CALL",

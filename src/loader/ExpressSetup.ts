@@ -28,7 +28,7 @@ class ExpressSetup {
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    app.use(express.static("./public"));
+    app.use(express.static("./src/public"));
     app.use(
       session({
         secret: "thanhthien bla bla",
