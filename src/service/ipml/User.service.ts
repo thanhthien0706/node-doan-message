@@ -116,6 +116,16 @@ class UserService implements IUserService {
 
     return deleteUser;
   }
+
+  async updateStatusUser(id: string, activity: boolean): Promise<any> {
+    const updateUser = await UserRepository.updateActivityUser(id, activity);
+
+    if (!updateUser) {
+      throw createError(404, "User Not Found");
+    }
+
+    return updateUser;
+  }
 }
 
 export default new UserService();

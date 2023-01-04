@@ -146,6 +146,17 @@ class UserRepository {
         .catch((err) => reject(err));
     });
   }
+
+  updateActivityUser(id: string, activity: boolean) {
+    return new Promise((resolve, reject) => {
+      UserModel.updateOne(
+        { _id: id as unknown as Types.ObjectId },
+        { activity: activity }
+      )
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+    });
+  }
 }
 
 export default new UserRepository();

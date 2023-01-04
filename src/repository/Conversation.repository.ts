@@ -46,6 +46,7 @@ class ConversationRepository {
             "dataMembers.username": 1,
             "dataMembers.avatar": 1,
             "dataMembers.phone": 1,
+            "dataMembers.activity": 1,
           },
         },
       ])

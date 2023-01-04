@@ -1,15 +1,19 @@
+import { type } from "os";
+import fs from "fs";
+import { Types } from "mongoose";
+
+import { createMessageDTO } from "../../dto/request/MessageDTO";
+
 import { ISocketService } from "../ISocket.service";
 import MessageService from "./Message.service";
 import CloudinaryService from "./Cloudinary.service";
-import { Types } from "mongoose";
-import { createMessageDTO } from "../../dto/request/MessageDTO";
-import { type } from "os";
-import fs from "fs";
+import UserService from "./User.service";
 
 let io: any;
 let listUserPeers: UserPeer[] = [];
 let socketId = "";
 let socketExtenal: any = null;
+let listUserSocket: any = [];
 
 interface UserPeer {
   idUser: string;
@@ -29,11 +33,10 @@ class SocketService implements ISocketService {
     this.socket = socket;
     socketId = this.socket.id;
     socketExtenal = this.socket;
-
     this.initMain();
   }
   initMain() {
-    this.socket.on("disconnect", () => {
+    this.socket.on("disconnect", async () => {
       const listExist = listUserPeers.filter((item) => {
         return item.idSocket !== this.socket.id;
       });
@@ -96,7 +99,7 @@ class SocketService implements ISocketService {
         data.attachment
       );
       messModel.attachment = fileUpload.url;
-    } else if(data.attachment && data.type == "FILE") {
+    } else if (data.attachment && data.type == "FILE") {
       fs.writeFileSync(`./src/public/files/${data.fileName}`, data.attachment);
 
       const url = `http://localhost:3000/files/${data.fileName}`;

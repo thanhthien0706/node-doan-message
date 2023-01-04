@@ -1,0 +1,6 @@
+_ What: khái niệm Kiểm định(Verification) và thẩm định(Validation) phần mềm.
+- Why: Tại sao phải kiểm định, thẩm định
+- When: Kiểm đỉnh và thẩm định khi nào 
+- How: kiểm định và thẩm định ntn ?
+- Ưu điểm của kiểm định và thẩm định 
+_ https://viblo.asia/p/kiem-dinhverification-va-tham-dinhvalidation-phan-mem-XL6lAY8glek#_i-kiem-dinh-0

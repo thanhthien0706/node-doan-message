@@ -39,7 +39,7 @@ const UserSchema: Schema = new Schema(
       type: Types.ObjectId,
       ref: "Role",
     },
-    activity: { type: Boolean },
+    activity: { type: Boolean, default: false },
   },
   {
     timestamps: true,

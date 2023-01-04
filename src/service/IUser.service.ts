@@ -22,4 +22,6 @@ export interface IUserService {
   findOneByIdGithub(idGithub: string): Promise<any>;
 
   deleteById(idUser: string): Promise<any>;
+
+  updateStatusUser(id: string, activity: boolean): Promise<any>;
 }
